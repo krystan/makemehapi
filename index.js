@@ -12,14 +12,43 @@ const server = new Hapi.Server();
 server.connection({port: 3000, routes: {cors:true}});
 
 server.register({ register: Chairo}, function(err) {
-  // Add action
-  let id = 0;
-  server.seneca.add({generate: 'id'}, function(message, next) {
-    return next(null, {id: ++id});
-  });
+    let id = 0;
+    server.seneca.add({generate: 'id'}, function(message, next) {
+        return next(null, {id: ++id});
+    });
+
+    server.seneca.add({getNames: 'names'}, function(message, input) {
+        var i = 0;
+
+        return input(null, {
+           names: [{'fullname': 'krystan honour'}, {'name' : 'joanna Honour'}]
+        });
+    });
 });
 
 // routes
+
+server.route({
+    method: 'GET',
+    path: '/names',
+    config: {
+        handler: function (request, reply) {
+            request.seneca.act({getNames: 'names'}, function (err, result) {
+                if (err) {
+                    return reply(err);
+                }
+
+                return reply(result.names);
+
+            })
+        },
+        description: 'Get list of names',
+        notes: 'Returns a list of names given arguments',
+        tags: ['api']
+    }
+});
+
+
 server.route({
     method: 'GET',
     path: '/',
@@ -32,7 +61,9 @@ server.route({
                 return reply('Hello world! ' + result.id);
             });
         },
-        tags: ['api'],
+        description: 'Get hello world',
+        notes: 'Returns a standard hello world response with a counter',
+        tags: ['api']
     }
 });
 
@@ -78,10 +109,11 @@ server.register({
     }
 
     server.start((err) => {
-
         if (err) {
             throw err;
         }
         server.log('info', 'Server running at: ' + server.info.uri);
     });
 });
+
+module.exports = server;
