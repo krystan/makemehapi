@@ -18,8 +18,6 @@ server.register({ register: Chairo}, function(err) {
     });
 
     server.seneca.add({getNames: 'names'}, function(message, input) {
-        var i = 0;
-
         return input(null, {
            names: [{'fullname': 'krystan honour'}, {'name' : 'joanna Honour'}]
         });
@@ -84,7 +82,7 @@ server.register([
         options: {
             info: {
                 'title': 'Test API Documentation',
-                'version': Pack.version,
+                'version': Pack.version
             }
         }
     }]
@@ -108,12 +106,14 @@ server.register({
         throw err; // something bad happened loading the plugin
     }
 
-    server.start((err) => {
-        if (err) {
-            throw err;
-        }
-        server.log('info', 'Server running at: ' + server.info.uri);
-    });
+    if (!module.parent) {
+        server.start((err) => {
+            if (err) {
+                throw err;
+            }
+            server.log('info', 'Server running at: ' + server.info.uri);
+        });
+    }
 });
 
 module.exports = server;
