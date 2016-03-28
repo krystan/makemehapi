@@ -9,6 +9,7 @@
   "author": "krystan@gmail.com",
   "license": "ISC",
   "dependencies": {
+    "chairo": "^2.1.0",
     "good": "^6.6.0",
     "good-console": "^5.3.1",
     "hapi": "^13.2.1",
