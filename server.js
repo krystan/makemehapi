@@ -2,10 +2,14 @@
 
 const Chairo = require('chairo');
 const Hapi = require('hapi');
+const Inert = require('inert');
+const Vision = require('vision');
+const HapiSwagger = require('hapi-swagger');
+const Pack = require('./package');
 const Good = require('good');
-
 const server = new Hapi.Server();
-server.connection({port: 3000}, {routes: {cors: true}});
+
+server.connection({port: 3000, routes: {cors:true}});
 
 server.register({ register: Chairo}, function(err) {
   // Add action
@@ -19,13 +23,16 @@ server.register({ register: Chairo}, function(err) {
 server.route({
     method: 'GET',
     path: '/',
-    handler: function(request, reply) {
-      request.seneca.act({generate: 'id' }, function(err, result) {
-        if (err) {
-          return reply(err);
-        }
-        return reply('Hello world! ' + result.id);
-      });
+    config: {
+        handler: function (request, reply) {
+            request.seneca.act({generate: 'id'}, function (err, result) {
+                if (err) {
+                    return reply(err);
+                }
+                return reply('Hello world! ' + result.id);
+            });
+        },
+        tags: ['api'],
     }
 });
 
@@ -37,20 +44,20 @@ server.route({
     }
 });
 
-// Static content
-server.register(require('inert'), (err) => {
-    if (err) {
-        throw err;
-    }
-
-    server.route({
-        method: 'GET',
-        path: '/hello',
-        handler: function (request, reply) {
-            reply.file('./public/hello.html');
+// register swagger, move to glue
+server.register([
+    Inert,
+    Vision,
+    {
+        register: HapiSwagger,
+        options: {
+            info: {
+                'title': 'Test API Documentation',
+                'version': Pack.version,
+            }
         }
-    });
-})
+    }]
+);
 
 // start server and log
 server.register({
