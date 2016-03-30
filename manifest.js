@@ -76,11 +76,6 @@ module.exports = {
                 register: './data',
                 options: {}
             }
-        }, {
-            plugin: {
-                register: './dataName',
-                options: {}
-            }
         }
     ]
 };
