@@ -9,11 +9,4 @@ module.exports = function (request, reply) {
         reply(result);
 
     });
-
-    request.seneca.act({getData: 'data', name: request.params.name}, function (err, result) {
-        if (err) {
-            reply(err);
-        }
-        reply(result);
-    });
 };

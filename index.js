@@ -6,7 +6,7 @@ const options = {
     relativeTo: __dirname + '/modules',
 };
 
-Glue.compose(Manifest, options, (err, server) = > {
+Glue.compose(Manifest, options, (err, server) => {
      if (err) {
          throw err;
      }
@@ -17,6 +17,6 @@ Glue.compose(Manifest, options, (err, server) = > {
          }
 
          server.log('info', 'Server running at: ' + server.info.uri);
-})
-})
+     });
+});
 

@@ -2,20 +2,20 @@
 const Boom = require('boom');
 
 exports.register = function (server, options, next) {
-    server.seneca.add({getData: 'data'}, function (message, input) {
 
+    server.seneca.add({getData: 'data', name: 'name'}, function (message, input) {
         var db = server.plugins['hapi-mongodb'].db;
 
-        db.collection('contacts').find().toArray(function (err, result) {
+        db.collection('contacts').findOne({"name": message.req$.params.name}, function (err, result) {
             if (err) return input(Boom.internal('Internal MongoDB error', err));
             input(null, result);
         });
     });
 
-    server.seneca.add({getData: 'data', name: 'name'}, function (message, input) {
+    server.seneca.add({getData: 'data'}, function (message, input) {
         var db = server.plugins['hapi-mongodb'].db;
 
-        db.collection('contacts').findOne({"name": message.name}, function (err, result) {
+        db.collection('contacts').find().toArray(function (err, result) {
             if (err) return input(Boom.internal('Internal MongoDB error', err));
             input(null, result);
         });
@@ -26,7 +26,7 @@ exports.register = function (server, options, next) {
             path: '/data',
             method: 'GET',
             config: {
-                handler: require('./version'),
+                handler: require('./version/getAll'),
                 description: 'Get data from Mongo',
                 notes: 'Returns Data from Mongo DB',
             }
@@ -35,7 +35,7 @@ exports.register = function (server, options, next) {
             path: '/{apiVersion}/data',
             method: 'GET',
             config: {
-                handler: require('./version'),
+                handler: require('./version/getAll'),
                 description: 'Get data from Mongo',
                 notes: 'Returns Data from MongoDB',
                 tags: ['api']
@@ -45,7 +45,7 @@ exports.register = function (server, options, next) {
             path: '/data/{name}',
             method: 'GET',
             config: {
-                handler: require('./version'),
+                handler: require('./version/getOne'),
                 description: 'Get data for specific Name from Mongo',
                 notes: 'Returns Data for specific Name from MongoDB'
             }
@@ -54,7 +54,7 @@ exports.register = function (server, options, next) {
             path: '/{apiVersion}/data/{name}',
             method: 'GET',
             config: {
-                handler: require('./version'),
+                handler: require('./version/getOne'),
                 description: 'Get data from Mongo',
                 notes: 'Returns Data from MongoDB',
                 tags: ['api']
