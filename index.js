@@ -1,6 +1,5 @@
 'use strict';
 const Glue = require('glue');
-const Pack = require('./package');
 const manifest = require('./config/manifest.json')
 
 const options = {
