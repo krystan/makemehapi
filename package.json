@@ -15,10 +15,15 @@
     "good-console": "^5.3.1",
     "hapi": "^13.2.1",
     "hapi-swagger": "^4.3.1",
+    "hapi-mongodb": "^6.0.0",
     "inert": "^3.2.0",
     "vision": "^4.0.1"
   },
   "devDependencies": {
     "lab": "^10.3.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/krystan/makemehapi.git"
   }
 }
