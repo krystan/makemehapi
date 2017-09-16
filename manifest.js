@@ -23,13 +23,15 @@ module.exports = {
             plugin: {
                 register: 'good',
                 options: {
-                    reporters: [{
-                        reporter: require('good-console'),
-                        events: {
-                            response: '*',
-                            log: '*'
-                        }
-                    }]
+                    reporters: {
+                      myConsoleReporter: [{
+                        module: 'good-squeeze',
+                        name: 'Squeeze',
+                        args: [{ log: '*', response: '*' }]
+                      }, {
+                        module: 'good-console'
+                      }, 'stdout']
+                  }
                 }
             }
         },
