@@ -20,8 +20,8 @@
     "hapi-mongodb": "^6.2.1",
     "hapi-swagger": "^7.7.1",
     "inert": "^4.2.1",
-    "vision": "^4.1.1",
-    "snyk": "^1.518.0"
+    "snyk": "^1.518.0",
+    "vision": "^4.1.1"
   },
   "devDependencies": {
     "lab": "^14.3.0"
