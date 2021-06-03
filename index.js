@@ -1,21 +1,23 @@
 'use strict';
-const Glue = require('glue');
+const Glue = require('@hapi/glue');
+const { server } = require('@hapi/hapi');
+const manifest = require('./manifest');
 const Manifest = require('./manifest');
 
 const options = {
     relativeTo: __dirname + '/modules',
 };
 
-Glue.compose(Manifest, options, (err, server) => {
-     if (err) {
-         throw err;
-     }
+const startServer = async function () {
+    try {
+        const server = await Glue.compose(manifest, options);
+        await server.start();
+        console.log('info', 'Server running at: ' + server.info.uri);
+    }
+    catch (err) {
+        console.log(err)
+        process.exit(1);
+    }
+};
 
-     server.start((err) => {
-         if (err) {
-             throw err;
-         }
-
-         server.log('info', 'Server running at: ' + server.info.uri);
-     });
-});
+startServer();
