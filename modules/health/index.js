@@ -1,27 +1,27 @@
 'use strict';
 
-// var seneca = require('seneca')();
-
 exports.plugin = {
     pkg: require('./package.json'),
     register: async function (server, options) {
+
         server.route({
-            path: '/names',
+            path: '/health',
             method: 'GET',
             config: {
                 handler: require('./version'),
-                description: 'Get list of names',
-                notes: 'Returns a list of names given arguments',
+                description: 'Health check point',
+                notes: 'Used to check the api is up',
+                tags: ['api']
             }
         });
 
         server.route({
-            path: '/{apiVersion}/names',
+            path: '/{apiVersion}/health',
             method: 'GET',
             config: {
                 handler: require('./version'),
-                description: 'Get list of names',
-                notes: 'Returns a list of names given arguments',
+                description: 'Health check point',
+                notes: 'Returns ok',
                 tags: ['api']
             }
         });

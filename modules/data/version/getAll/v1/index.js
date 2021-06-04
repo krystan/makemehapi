@@ -1,12 +1,13 @@
 'use strict';
 
-module.exports = function (request, reply) {
+module.exports = async function (request, h) {
+    const db = request.mongo.db;
 
-    request.seneca.act({getData: 'data'}, function (err, result) {
-        if (err) {
-            reply(err);
-        }
-        reply(result);
-
-    });
+    try {
+        const result = await db.collection('contacts').find({}).toArray();
+        return result;
+    }
+    catch (err) {
+        throw Boom.internal('Internal MongoDB error', err);
+    }
 };

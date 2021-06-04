@@ -35,3 +35,9 @@ jspm_packages
 
 # idea
 .idea
+
+# Mongo database dir
+mongodb/database
+
+# vscode
+.vscode
