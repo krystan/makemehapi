@@ -1,11 +1,15 @@
+const Boom = require('@hapi/boom');
+
 'use strict';
 
-module.exports = function (request, reply) {
+module.exports = async function (request, h) {
+    const db = request.mongo.db;
 
-    request.seneca.act({getData: 'data', name: 'name'}, function (err, result) {
-        if (err) {
-            reply(err);
-        }
-        reply(result);
-    });
+    try {
+        const result = await db.collection('contacts').findOne({ name: request.params.name });
+        return result;
+    }
+    catch (err) {
+        throw Boom.internal('Internal MongoDB error', err);
+    }
 };
